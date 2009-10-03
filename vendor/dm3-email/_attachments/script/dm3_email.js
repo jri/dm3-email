@@ -16,7 +16,8 @@ dm3_email.prototype = {
                     },
                     view: {
                         editor: "single line",
-                        autocomplete_indexes: ["dm3-contacts"]
+                        autocomplete_indexes: ["dm3-contacts", "dm3-workspaces"],
+                        autocomplete_style: "item list"
                     },
                     content: ""
                 },
@@ -27,7 +28,8 @@ dm3_email.prototype = {
                     },
                     view: {
                         editor: "single line",
-                        autocomplete_indexes: ["dm3-contacts"]
+                        autocomplete_indexes: ["dm3-contacts", "dm3-workspaces"],
+                        autocomplete_style: "item list"
                     },
                     content: ""
                 },
@@ -38,7 +40,8 @@ dm3_email.prototype = {
                     },
                     view: {
                         editor: "single line",
-                        autocomplete_indexes: ["dm3-contacts"]
+                        autocomplete_indexes: ["dm3-contacts", "dm3-workspaces"],
+                        autocomplete_style: "item list"
                     },
                     content: ""
                 },
