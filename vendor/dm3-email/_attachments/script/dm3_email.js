@@ -1,6 +1,14 @@
 function dm3_email() {
     doctype_implementation("vendor/dm3-email/script/email.js")
-    // css_stylesheet("vendor/dm3-workspaces/style/dm3-workspaces.css")
+
+    db.send_email = function(recipients) {
+        var uri = this.uri + "_mailer"
+        this.last_req = this.request("POST", uri, {body: JSON.stringify(recipients)})
+        // if (this.last_req.status == 404)
+        //    return null
+        CouchDB.maybeThrowError(this.last_req)
+        // return JSON.parse(this.last_req.responseText)
+    }
 }
 
 dm3_email.prototype = {

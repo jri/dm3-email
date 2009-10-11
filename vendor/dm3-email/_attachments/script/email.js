@@ -13,21 +13,33 @@ Email.prototype = {
         // we add our own buttons
         $("#lower_toolbar").append($("<input>").attr({type: "button", id: "send_button", value: "Send"}))
         $("#lower_toolbar").append($("<input>").attr({type: "button", id: "save_button", value: "Save as draft"}))
-        $("#send_button").click(this.send_email)
+        $("#send_button").click(this.do_send_email)
         $("#save_button").click(this.update_document)
     },
 
-    send_email: function() {
+    do_send_email: function() {
         Email.prototype.update_document()
         //
         log("Sending mail")
         //
-        // --- To ---
-        var addressees = {}     // key: name as entered, value: true (identified) / false (not identified)
-        var recipients = {}     // key: name of identified contact, value: email address (may be empty)
+        var recipients = Email.prototype.get_recipients("To")
+        Email.prototype.send_email(recipients)
+    },
+
+    send_email: function(recipients) {
+        db.send_email(recipients)
+    },
+
+    get_recipients: function(field_id) {
         //
-        var rcpts = get_field(current_doc, "To").content.split(",")
-        log("..... recipients entered in \"To\" field (" + rcpts.length + ")")
+        var addressees = {}     // key: name as entered, value: true (identified) / false (not identified)
+        var identified = {}     // key: name of identified contact, value: email address (may be empty)
+        //
+        var rcpts = get_field(current_doc, field_id).content.split(",")
+        for (var i = 0; i < rcpts.length; i++) {
+            rcpts[i] = jQuery.trim(rcpts[i])
+        }
+        log("..... recipients entered in \"" + field_id + "\" field (" + rcpts.length + ")")
         for (var i = 0, recipient; recipient = rcpts[i]; i++) {
             log(".......... \"" + recipient + "\"")
             addressees[recipient] = false   // not yet identified
@@ -38,7 +50,7 @@ Email.prototype = {
         for (var i = 0, row; row = rows[i]; i++) {
             log(".......... \"" + row.key + "\" => \"" + row.value + "\"")
             addressees[row.key] = true      // identified
-            recipients[row.key] = row.value
+            identified[row.key] = row.value
         }
         // Workspaces
         var rows = db.view("deepamehta3/dm3-workspaces_by-name", null, rcpts).rows
@@ -50,7 +62,7 @@ Email.prototype = {
             var topics = db.view("deepamehta3/dm3-email", null, topic_ids).rows
             for (var j = 0, topic; topic = topics[j]; j++) {
                 log("............... \"" + topic.value[0] + "\" => \"" + topic.value[1] + "\"")
-                recipients[topic.value[0]] = topic.value[1]
+                identified[topic.value[0]] = topic.value[1]
             }
         }
         //
@@ -66,8 +78,8 @@ Email.prototype = {
         //
         log("..... unknown email addresses:")
         var count = 0
-        for (var rcpt in recipients) {
-            if (recipients[rcpt] == "") {
+        for (var rcpt in identified) {
+            if (identified[rcpt] == "") {
                 log(".......... \"" + rcpt + "\"")
                 count++
             }
@@ -75,13 +87,17 @@ Email.prototype = {
         log("..... => " + count)
         //
         log("..... individual email addresses:")
+        var recipients = {}     // key: recipient name, value: email address
         var count = 0
-        for (var rcpt in recipients) {
-            if (recipients[rcpt]) {
-                log(".......... \"" + rcpt + "\" => \"" + recipients[rcpt] + "\"")
+        for (var rcpt in identified) {
+            if (identified[rcpt]) {
+                log(".......... \"" + rcpt + "\" => \"" + identified[rcpt] + "\"")
+                recipients[rcpt] = identified[rcpt]
                 count++
             }
         }
         log("..... => " + count)
+        //
+        return recipients
     }
 }
