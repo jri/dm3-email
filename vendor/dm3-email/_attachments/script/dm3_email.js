@@ -1,9 +1,14 @@
 function dm3_email() {
     doctype_implementation("vendor/dm3-email/script/email.js")
 
-    db.send_email = function(recipients) {
+    db.send_email = function(sender, recipients, subject, message) {
         var uri = this.uri + "_mailer"
-        this.last_req = this.request("POST", uri, {body: JSON.stringify(recipients)})
+        this.last_req = this.request("POST", uri, {body: JSON.stringify({
+            sender: sender,
+            recipients: recipients,
+            subject: subject,
+            message: message
+        })})
         // if (this.last_req.status == 404)
         //    return null
         CouchDB.maybeThrowError(this.last_req)
@@ -14,9 +19,20 @@ function dm3_email() {
 dm3_email.prototype = {
 
     init: function() {
-        // alert("dm3_email.init:")
         types["Email"] = {
             fields: [
+                {
+                    id: "From",
+                    model: {
+                        type: "text",
+                    },
+                    view: {
+                        editor: "single line",
+                        autocomplete_indexes: ["dm3-contacts", "dm3-workspaces"],
+                        autocomplete_style: "default"
+                    },
+                    content: ""
+                },
                 {
                     id: "To",
                     model: {
