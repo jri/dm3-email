@@ -1,8 +1,8 @@
 function dm3_email() {
     doctype_implementation("vendor/dm3-email/script/email.js")
 
-    db.send_email = function(sender, recipients, subject, message) {
-        var uri = this.uri + "_mailer"
+    db.send_email = function(sender, recipients, subject, message, doc_id) {
+        var uri = this.uri + "_mailer/" + doc_id
         this.last_req = this.request("POST", uri, {body: JSON.stringify({
             sender: sender,
             recipients: recipients,
@@ -28,7 +28,7 @@ dm3_email.prototype = {
                     },
                     view: {
                         editor: "single line",
-                        autocomplete_indexes: ["dm3-contacts", "dm3-workspaces"],
+                        autocomplete_indexes: ["dm3-contacts"],
                         autocomplete_style: "default"
                     },
                     content: ""

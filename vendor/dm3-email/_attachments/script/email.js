@@ -30,11 +30,11 @@ Email.prototype = {
         }
         var subject = get_field(current_doc, "Subject").content
         var message = get_field(current_doc, "Message").content
-        Email.prototype.send_email(sender, recipients, subject, message)
+        Email.prototype.send_email(sender, recipients, subject, message, current_doc._id)
     },
 
-    send_email: function(sender, recipients, subject, message) {
-        db.send_email(sender, recipients, subject, message)
+    send_email: function(sender, recipients, subject, message, doc_id) {
+        db.send_email(sender, recipients, subject, message, doc_id)
     },
 
     /**
