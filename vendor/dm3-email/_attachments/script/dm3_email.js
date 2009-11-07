@@ -91,7 +91,8 @@ dm3_email.prototype = {
                     content: ""
                 }
             ],
-            implementation: "Email"
+            implementation: "Email",
+            icon_src: "vendor/dm3-email/images/envelope.png"
         }
     }
 }
