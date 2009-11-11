@@ -1,6 +1,6 @@
 function dm3_email() {
 
-    doctype_implementation("vendor/dm3-email/script/email.js")
+    doctype_implementation("vendor/dm3-email/script/email_document.js")
 
     this.init = function() {
         types["Email"] = {
@@ -15,7 +15,7 @@ function dm3_email() {
             view: {
                 icon_src: "vendor/dm3-email/images/envelope.png"
             },
-            implementation: "Email"
+            implementation: "EmailDocument"
         }
     }
 
