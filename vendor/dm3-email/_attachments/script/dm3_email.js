@@ -27,9 +27,7 @@ function dm3_email() {
             subject: subject,
             message: message
         })})
-        // if (this.last_req.status == 404)
-        //    return null
         CouchDB.maybeThrowError(this.last_req)
-        // return JSON.parse(this.last_req.responseText)
+        return JSON.parse(this.last_req.responseText)
     }
 }

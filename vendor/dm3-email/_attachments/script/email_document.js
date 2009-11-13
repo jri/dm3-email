@@ -17,7 +17,12 @@ function EmailDocument() {
     }
 
     function send_email(sender, recipients, subject, message, doc_id) {
-        db.send_email(sender, recipients, subject, message, doc_id)
+        var response = db.send_email(sender, recipients, subject, message, doc_id)
+        if (response.success) {
+            alert("Sending mail SUCCESSFUL.\n\n" + response.message)
+        } else {
+            alert("Sending mail FAILED.\n\n" + response.message)
+        }
     }
 
     /**
