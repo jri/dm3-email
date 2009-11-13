@@ -6,10 +6,21 @@ function EmailDocument() {
         log("Sending mail")
         //
         var sender = get_sender()
+        // identify recipients
+        var recipients_to = get_recipients("To")
+        var recipients_cc = get_recipients("Cc")
+        var recipients_bcc = get_recipients("Bcc")
+        // check for invalid recipients
+        var not_identified = [].concat(recipients_to[1], recipients_cc[1], recipients_bcc[1])
+        var address_unknown = [].concat(recipients_to[2], recipients_cc[2], recipients_bcc[2])
+        if (!do_proceed(not_identified, address_unknown)) {
+            return
+        }
+        // send mail
         var recipients = {
-            to: get_recipients("To"),
-            cc: get_recipients("Cc"),
-            bcc: get_recipients("Bcc")
+            to: recipients_to[0],
+            cc: recipients_cc[0],
+            bcc: recipients_bcc[0]
         }
         var subject = get_field(current_doc, "Subject").content
         var message = get_field(current_doc, "Message").content
@@ -26,9 +37,12 @@ function EmailDocument() {
     }
 
     /**
-     * Identifies contacts and workspaces as entered in the field and returns the identified recipients.
+     * Identifies contacts as entered in the field and returns the result.
      *
-     * @return  Identified recipients (object, key: recipient name, value: email address).
+     * @return  Array of 3 objects:
+     *          [0] - Identified recipients (object, key: recipient name, value: email address).
+     *          [1] - For error report: Not identified recipients (array of recipient names).
+     *          [2] - For error report: Identified recipients but with unknown email address (array of recipient names).
      */
     function get_recipients(field_id) {
         //
@@ -37,12 +51,17 @@ function EmailDocument() {
         // "rcpts": Array of recipients as entered in the field. Each recipient is trimmed.
         var rcpts = get_field(current_doc, field_id).content.split(",")
         //
-        log("..... recipients entered in \"" + field_id + "\" field (" + rcpts.length + ")")
+        log("..... recipients entered in \"" + field_id + "\" field")
+        var count = 0
         for (var i = 0; i < rcpts.length; i++) {    // Note: can't use the other for idiom because recipients may be empty (false)
             rcpts[i] = jQuery.trim(rcpts[i])
-            log("............... \"" + rcpts[i] + "\"")
-            addressees[rcpts[i]] = false            // not yet identified
+            if (rcpts[i]) {
+                log("............... \"" + rcpts[i] + "\"")
+                addressees[rcpts[i]] = false            // not yet identified
+                count++
+            }
         }
+        log("............... => " + count)
         // identify contacts
         var rows = db.view("deepamehta3/dm3-contacts_by-name", null, rcpts).rows
         log(".......... identified contacts (" + rows.length + ")")
@@ -53,24 +72,28 @@ function EmailDocument() {
         }
         //
         log(".......... not identified:")
+        var not_identified = []
         var count = 0
         for (var adr in addressees) {
             if (!addressees[adr]) {
                 log("............... \"" + adr + "\"")
+                not_identified.push(adr)
                 count++
             }
         }
-        log(".......... => " + count)
+        log("............... => " + count)
         //
         log(".......... unknown email addresses:")
+        address_unknown = []
         var count = 0
         for (var rcpt in identified) {
             if (!identified[rcpt]) {
                 log("............... \"" + rcpt + "\"")
+                address_unknown.push(rcpt)
                 count++
             }
         }
-        log(".......... => " + count)
+        log("............... => " + count)
         //
         log(".......... individual email addresses:")
         var recipients = {}     // key: recipient name, value: email address
@@ -82,9 +105,9 @@ function EmailDocument() {
                 count++
             }
         }
-        log(".......... => " + count)
+        log("............... => " + count)
         //
-        return recipients
+        return [recipients, not_identified, address_unknown]
     }
 
     function get_sender() {
@@ -122,6 +145,27 @@ function EmailDocument() {
             }
         }
         return contact_names
+    }
+
+    function do_proceed(not_identified, address_unknown) {
+        if (!not_identified.length && !address_unknown.length) {
+            return true
+        }
+        var message = ""
+        if (not_identified.length) {
+            message += not_identified.length + " recipients can not be identified:\n"
+            for (var i = 0, recipient; recipient = not_identified[i]; i++) {
+                message += "     " + recipient + "\n"
+            }
+        }
+        if (address_unknown.length) {
+            message += address_unknown.length + " recipients have no email address:\n"
+            for (var i = 0, recipient; recipient = address_unknown[i]; i++) {
+                message += "     " + recipient + "\n"
+            }
+        }
+        message += "Do you want send the mail anyway?"
+        return confirm(message)
     }
 }
 
