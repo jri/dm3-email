@@ -63,7 +63,7 @@ function EmailDocument() {
         }
         log("............... => " + count)
         // identify contacts
-        var rows = db.view("deepamehta3/dm3-contacts_by-name", null, rcpts).rows
+        var rows = db.view("deepamehta3/dm3-contacts_by-name", null, keys(addressees)).rows
         log(".......... identified contacts (" + rows.length + ")")
         for (var i = 0, row; row = rows[i]; i++) {
             log("............... \"" + row.key + "\" => \"" + row.value + "\"")
