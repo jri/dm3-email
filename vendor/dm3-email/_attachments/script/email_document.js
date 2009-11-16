@@ -173,7 +173,7 @@ EmailDocument.prototype = {
 
     __proto__: PlainDocument.prototype,
 
-    /*** Overriding hooks ***/
+    /*** Overriding Hooks ***/
 
     post_render_form: function() {
         // Note: super is not called here
@@ -194,7 +194,8 @@ EmailDocument.prototype = {
     render_autocomplete_item: function(item) {
         var html = "<img src=\"" + get_icon_src(item[0]) + "\" border=\"0\" align=\"absmiddle\"> " + item[1]
         switch (item[0]) {
-            case "Contact":
+            case "Person":
+            case "Institution":
                 if (item[2]) {
                     return html + " <span style=\"color: gray\">&lt;" + item[2] + "></span>"
                 } else {
@@ -209,7 +210,8 @@ EmailDocument.prototype = {
 
     process_autocomplete_selection: function(item) {
         switch (item[0]) {
-            case "Contact":
+            case "Person":
+            case "Institution":
                 return item[1]
             case "Workspace":
                 return this.get_workspace_contacts(item[1]).join(", ")
