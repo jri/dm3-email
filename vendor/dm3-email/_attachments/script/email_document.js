@@ -1,5 +1,7 @@
 function EmailDocument() {
 
+    var obj = this
+
     this.do_send_email = function() {
         EmailDocument.prototype.update_document()
         //
@@ -67,8 +69,12 @@ function EmailDocument() {
         log(".......... identified contacts (" + rows.length + ")")
         for (var i = 0, row; row = rows[i]; i++) {
             log("............... \"" + row.key + "\" => \"" + row.value + "\"")
+            var email_address = obj.email_address(row.value)
+            if (email_address != row.value) {
+                log(".................... WARNING: only the 1st email address is used")
+            }
+            identified[row.key] = email_address
             addressees[row.key] = true              // identified
-            identified[row.key] = row.value
         }
         //
         log(".......... not identified:")
@@ -167,6 +173,16 @@ function EmailDocument() {
         message += "Do you want send the mail anyway?"
         return confirm(message)
     }
+
+    /**
+     * Returns the first email address.
+     *
+     * @param   email_string    a string containing one ore more email addresses.
+     *                          An arbitrary run of spaces, commas, and/or newlines is expected as the separator.
+     */
+    this.email_address = function(email_string) {
+        return email_string.split(/[ ,\n]+/)[0]
+    }
 }
 
 EmailDocument.prototype = {
@@ -197,7 +213,7 @@ EmailDocument.prototype = {
             case "Person":
             case "Institution":
                 if (item[2]) {
-                    return html + " <span style=\"color: gray\">&lt;" + item[2] + "></span>"
+                    return html + " <span style=\"color: gray\">&lt;" + this.email_address(item[2]) + "></span>"
                 } else {
                     return html + " <span style=\"color: gray\">&lt;<span style=\"color: red; font-weight: bold\">unknown email address</span>></span>"
                 }

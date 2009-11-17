@@ -12,7 +12,8 @@ function dm3_email() {
             {id: "Message", model: {type: "text"}, view: {editor: "multi line", lines: 18}, content: ""}
         ],
         view: {
-            icon_src: "vendor/dm3-email/images/envelope.png"
+            icon_src: "vendor/dm3-email/images/envelope.png",
+            label_field: "Subject"
         },
         implementation: "EmailDocument"
     }
