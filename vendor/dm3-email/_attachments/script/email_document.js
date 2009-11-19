@@ -195,10 +195,10 @@ EmailDocument.prototype = {
         // Note: super is not called here
         //
         // we add our own buttons
-        $("#lower_toolbar").append($("<input>").attr({type: "button", id: "send_button", value: "Send"}))
-        $("#lower_toolbar").append($("<input>").attr({type: "button", id: "save_button", value: "Save as draft"}))
-        $("#send_button").click(this.do_send_email)
-        $("#save_button").click(this.update_document)
+        $("#lower_toolbar").append("<button id='send_button'>")
+        $("#lower_toolbar").append("<button id='save_button'>")
+        ui.button("send_button", this.do_send_email, "Send", "mail-closed")
+        ui.button("save_button", this.update_document, "Save as Draft", "check")
     },
 
     /**
