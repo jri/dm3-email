@@ -1,6 +1,7 @@
 function dm3_email() {
 
     doctype_implementation("vendor/dm3-email/script/email_document.js")
+    css_stylesheet("vendor/dm3-email/style/dm3-email.css")
 
     types["Email"] = {
         fields: [

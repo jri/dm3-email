@@ -204,24 +204,37 @@ EmailDocument.prototype = {
     /**
      * Renders one item of the suggestion menu.
      *
-     * @param   item    the item as returned by the fulltext index function (array).
+     * @param   item    the item (array) as returned by the fulltext index functions ("dm3-contacts" and "dm3-workspaces").
+     *                  item[0] - Topic type.
+     *                  item[1] - Topic label.
+     *                  item[2] - Email address (in case of "dm3-contacts").
      * @return  The HTML rendering of the item (string).
      */
     render_autocomplete_item: function(item) {
-        var html = "<img src=\"" + get_icon_src(item[0]) + "\" border=\"0\" align=\"absmiddle\"> " + item[1]
+        var ac_item = $("<div>")
+        ac_item.append(type_icon_tag(item[0], "menu-icon"))
+        ac_item.append(item[1])
         switch (item[0]) {
             case "Person":
             case "Institution":
+                // append email address
+                var email = $("<span>").addClass("email-address")
+                email.append("<")
                 if (item[2]) {
-                    return html + " <span style=\"color: gray\">&lt;" + this.email_address(item[2]) + "></span>"
+                    email.append(this.email_address(item[2]))
                 } else {
-                    return html + " <span style=\"color: gray\">&lt;<span style=\"color: red; font-weight: bold\">unknown email address</span>></span>"
+                    email.append($("<span>").addClass("email-unknown").text("unknown email address"))
                 }
+                email.append(">")
+                //
+                ac_item.append(email)
+                break
             case "Workspace":
-                return html
+                break
             default:
                 alert("EmailDocument.render_autocomplete_item: unexpected item: " + JSON.stringify(item))
         }
+        return ac_item
     },
 
     process_autocomplete_selection: function(item) {
