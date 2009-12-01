@@ -30,7 +30,7 @@ Installation
 2.  Download DeepaMehta 3 Email Plugin:
         couchapp vendor install git://github.com/jri/dm3-email.git
 
-3.  Activate the plugin by inserting this line to DeepaMehta's `_attachments/javascript/plugins.js`:
+3.  Activate the plugin by inserting one line to DeepaMehta's `_attachments/javascript/plugins.js`:
         add_plugin("vendor/dm3-email/script/dm3_email.js")
 
 4.  Add additional stuff by copying a directory:
@@ -40,7 +40,7 @@ Installation
     as described on the respective pages.
 
 6.  Upload changes to CouchDB:
-        couchapp push --atomic http://localhost:5984/deepamehta3-db
+        couchapp push http://localhost:5984/deepamehta3-db
 
 
 Usage
@@ -68,6 +68,12 @@ Usage
 5.  To send the email click the *Send* button.
 
 
+Version History
+---------------
+
+`v0.2` -- Dec  1, 2009 -- Basic functionality. Requires DeepaMehta 3 v0.2
+
+
 ------------
 Jörg Richter  
-Nov 13, 2009
+Dec 1, 2009

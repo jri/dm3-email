@@ -56,7 +56,7 @@ function EmailDocument() {
         log("..... recipients entered in \"" + field_id + "\" field")
         var count = 0
         for (var i = 0; i < rcpts.length; i++) {    // Note: can't use the other for idiom because recipients may be empty (false)
-            rcpts[i] = jQuery.trim(rcpts[i])
+            rcpts[i] = $.trim(rcpts[i])
             if (rcpts[i]) {
                 log("............... \"" + rcpts[i] + "\"")
                 addressees[rcpts[i]] = false            // not yet identified
