@@ -10,7 +10,7 @@ function dm3_email() {
             {id: "Cc",      model: {type: "text"}, view: {editor: "single line", autocomplete_indexes: ["dm3-contacts", "dm3-workspaces"], autocomplete_style: "item list"}, content: ""},
             {id: "Bcc",     model: {type: "text"}, view: {editor: "single line", autocomplete_indexes: ["dm3-contacts", "dm3-workspaces"], autocomplete_style: "item list"}, content: ""},
             {id: "Subject", model: {type: "text"}, view: {editor: "single line"},           content: ""},
-            {id: "Message", model: {type: "text"}, view: {editor: "multi line", lines: 18}, content: ""}
+            {id: "Message", model: {type: "html"}, view: {editor: "multi line", lines: 18}, content: ""}
         ],
         view: {
             icon_src: "vendor/dm3-email/images/envelope.png",
