@@ -19,13 +19,14 @@ function dm3_email() {
         implementation: "EmailDocument"
     }
 
-    db.send_email = function(sender, recipients, subject, message, doc_id) {
+    db.send_email = function(sender, recipients, subject, message, format, doc_id) {
         var uri = this.uri + "_mailer/" + doc_id
         this.last_req = this.request("POST", uri, {body: JSON.stringify({
             sender: sender,
             recipients: recipients,
             subject: subject,
-            message: message
+            message: message,
+            "message-format": format
         })})
         CouchDB.maybeThrowError(this.last_req)
         return JSON.parse(this.last_req.responseText)

@@ -26,11 +26,23 @@ function EmailDocument() {
         }
         var subject = get_field(current_doc, "Subject").content
         var message = get_field(current_doc, "Message").content
-        send_email(sender, recipients, subject, message, current_doc._id)
+        send_email(sender, recipients, subject, message, message_format(), current_doc._id)
+
+        function message_format() {
+            var type = get_field(current_doc, "Message").model.type
+            switch (type) {
+                case "text":
+                    return "plain"
+                case "html":
+                    return "html"
+                default:
+                    alert("message_format: unexpected field type (\"" + type + "\")")
+            }
+        }
     }
 
-    function send_email(sender, recipients, subject, message, doc_id) {
-        var response = db.send_email(sender, recipients, subject, message, doc_id)
+    function send_email(sender, recipients, subject, message, format, doc_id) {
+        var response = db.send_email(sender, recipients, subject, message, format, doc_id)
         if (response.success) {
             alert("Sending mail SUCCESSFUL.\n\n" + response.message)
         } else {
@@ -185,11 +197,17 @@ function EmailDocument() {
     }
 }
 
+
+
+/**************************************************************************************************/
+/**************************************** Overriding Hooks ****************************************/
+/**************************************************************************************************/
+
+
+
 EmailDocument.prototype = {
 
     __proto__: PlainDocument.prototype,
-
-    /*** Overriding Hooks ***/
 
     post_render_form: function() {
         // Note: super is not called here
