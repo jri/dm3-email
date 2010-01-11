@@ -16,12 +16,12 @@
     <target name="deploy">
 
         <basename file="${basedir}" property="project.name"/>
-        <available file="vendor/${project.name}/views"    property="views.present"/>
-        <available file="vendor/${project.name}/fulltext" property="fulltextviews.present"/>
+        <available file="vendor/views"    property="views.present"/>
+        <available file="vendor/fulltext" property="fulltextviews.present"/>
 
-        <copy todir="${dm3-repos.dir}/vendor" preservelastmodified="true">
+        <copy todir="${dm3-repos.dir}/vendor/${project.name}" preservelastmodified="true">
             <fileset dir="vendor">
-                <include name="${project.name}/_attachments/"/>
+                <include name="_attachments/"/>
             </fileset>
         </copy>
 
@@ -32,13 +32,13 @@
 
     <target name="copy-views" if="views.present">
         <copy todir="${dm3-repos.dir}/views" preservelastmodified="true">
-            <fileset dir="vendor/${project.name}/views"/>
+            <fileset dir="vendor/views"/>
         </copy>
     </target>
 
     <target name="copy-fulltextviews" if="fulltextviews.present">
         <copy todir="${dm3-repos.dir}/fulltext" preservelastmodified="true">
-            <fileset dir="vendor/${project.name}/fulltext"/>
+            <fileset dir="vendor/fulltext"/>
         </copy>
     </target>
 
