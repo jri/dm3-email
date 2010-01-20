@@ -3,7 +3,7 @@ function dm3_email() {
     doctype_implementation("vendor/dm3-email/script/email_document.js")
     css_stylesheet("vendor/dm3-email/style/dm3-email.css")
 
-    types["Email"] = {
+    add_topic_type("Email", {
         fields: [
             {id: "From",    model: {type: "text"}, view: {editor: "single line", autocomplete_indexes: ["dm3-contacts"],                   autocomplete_style: "default"},   content: ""},
             {id: "To",      model: {type: "text"}, view: {editor: "single line", autocomplete_indexes: ["dm3-contacts", "dm3-workspaces"], autocomplete_style: "item list"}, content: ""},
@@ -17,7 +17,7 @@ function dm3_email() {
             label_field: "Subject"
         },
         implementation: "EmailDocument"
-    }
+    })
 
     db.send_email = function(sender, recipients, subject, message, format, doc_id) {
         var uri = this.uri + "_mailer/" + doc_id
