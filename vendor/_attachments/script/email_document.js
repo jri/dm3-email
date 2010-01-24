@@ -209,7 +209,7 @@ EmailDocument.prototype = {
 
     __proto__: PlainDocument.prototype,
 
-    post_render_form: function() {
+    post_render_form: function(doc) {
         // Note: super is not called here
         //
         // we add our own buttons
