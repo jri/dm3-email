@@ -24,8 +24,8 @@ function EmailDocument() {
             cc: recipients_cc[0],
             bcc: recipients_bcc[0]
         }
-        var subject = get_field(current_doc, "Subject").content
-        var message = get_field(current_doc, "Message").content
+        var subject = get_value(current_doc, "Subject")
+        var message = get_value(current_doc, "Message")
         send_email(sender, recipients, subject, message, message_format(), current_doc._id)
 
         function message_format() {
@@ -63,7 +63,7 @@ function EmailDocument() {
         var addressees = {}     // key: name as entered, value: true (identified) / false (not identified)
         var identified = {}     // key: name of identified contact, value: email address (may be empty)
         // "rcpts": Array of recipients as entered in the field. Each recipient is trimmed.
-        var rcpts = get_field(current_doc, field_id).content.split(",")
+        var rcpts = get_value(current_doc, field_id).split(",")
         //
         log("..... recipients entered in \"" + field_id + "\" field")
         var count = 0
@@ -130,7 +130,7 @@ function EmailDocument() {
 
     function get_sender() {
         var sender = {}
-        var sender_name = get_field(current_doc, "From").content
+        var sender_name = get_value(current_doc, "From")
         var rows = db.view("deepamehta3/dm3-contacts_by-name", {key: sender_name}).rows
         if (rows.length == 0) {
             log("..... sender: \"" + sender_name + "\" => not identified")

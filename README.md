@@ -11,14 +11,20 @@ Requirements
 *   A DeepaMehta 3 installation  
     <http://github.com/jri/deepamehta3>
 
-*   Two other DeepaMehta 3 plugins  
-    - *DM3 Contacts*   (<http://github.com/jri/dm3-contacts>)  
-    - *DM3 Workspaces* (<http://github.com/jri/dm3-workspaces>)  
-      Installing the DM3 Workspaces plugin is optional.
+*   Other DeepaMehta 3 plugins:
+
+    - *DM3 Contacts*  
+      <http://github.com/jri/dm3-contacts>  
+      This plugin provides you with an address book.
+
+    - *DM3 Workspaces* (optional install)  
+      <http://github.com/jri/dm3-workspaces>  
       If installed you get an easy way to maintain distribution lists (collections of contacts).
 
-*   One CouchDB extension  
-    - *CouchDB Mailer* (<http://github.com/jri/couchdb-mailer>)
+*   One CouchDB extension:  
+
+    - *CouchDB Mailer*
+      <http://github.com/jri/couchdb-mailer>
 
 
 Installation
@@ -36,7 +42,7 @@ Installation
 4.  Add additional stuff by copying a directory:
         cp -r vendor/dm3-email/views/dm3-email views
 
-5.  Install the other 2 required DeepaMehta plugins and the CouchDB extension (see Requirements)
+5.  Install the other DeepaMehta plugins and the CouchDB extension (see Requirements)
     as described on the respective pages.
 
 6.  Upload changes to CouchDB:
