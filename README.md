@@ -39,7 +39,7 @@ Installation
 3.  Activate the plugin by inserting one line to DeepaMehta's `_attachments/javascript/plugins.js`:
         add_plugin("vendor/dm3-email/script/dm3_email.js")
 
-4.  Add additional stuff by copying a directory:
+4.  Copy additional stuff:
         cp -r vendor/dm3-email/views/dm3-email views
 
 5.  Install the other DeepaMehta plugins and the CouchDB extension (see Requirements)
@@ -55,16 +55,17 @@ Usage
 1.  Visit DeepaMehta 3 in your webbrowser (resp. press reload):
         http://localhost:5984/deepamehta3-db/_design/deepamehta3/index.html
 
-    You'll find the additional document types "Contact" and "Email" in the type menu (next to the "Create" button).
+    You'll find the additional topic type *Email* in the type menu (next to the *Create* button).
 
-2.  Create contacts and optionally assign them to workspaces. A contact represents e.g. a person or an institution.
+2.  Create contacts (persons or institutions) and optionally assign them to workspaces.
     A workspace represents a distribution list. Dont't forget to create a contact for yourself.
 
-3.  Create an email and enter your name in the *From* field. Then address the email by entering contact names and/or
+3.  Create an email and enter your name in the *From* field. Address the email by entering contact names and/or
     workspace names in the *To*, *Cc*, or *Bcc* fields. Each field can hold an arbitrary number of addressees.
 
     Auto-completion feature: After typing some letters DeepaMehta suggests matching contacts or workspaces by means of a menu.
-    If an email is addressed to a workspace it is send to every contact assigned to that workspace.
+    If an email is addressed to a workspace, by default it is send to every contact assigned to that workspace.
+    To remove single workspace members delete them from the address field before sending the email.
 
 4.  In order to attach files to the email you must save it first (by clicking the *Save as draft* button), then upload
     the attachments (by clicking *Upload Attachment*), and return to edit mode (by clicking *Edit*).
@@ -74,12 +75,36 @@ Usage
 5.  To send the email click the *Send* button.
 
 
+Updating
+--------
+
+1.  Go to your DeepaMehta 3 installation directory:
+        cd deepamehta3
+
+2.  Update DeepaMehta 3 Email Plugin:
+        couchapp vendor update dm3-email
+
+3.  Copy additional stuff:
+        cp -r vendor/dm3-email/views/dm3-email views
+
+4.  Upload changes to CouchDB:
+        couchapp push http://localhost:5984/deepamehta3-db
+
+
 Version History
 ---------------
 
-`v0.2` -- Dec  1, 2009 -- Basic functionality. Requires DeepaMehta 3 v0.2
+**v0.3** -- Mar 6, 2010
+
+* Email "Message" is a rich text field
+* Compatible with DeepaMehta 3 v0.3
+
+**v0.2** -- Dec 1, 2009
+
+* Basic functionality
+* Requires DeepaMehta 3 v0.2
 
 
 ------------
 Jörg Richter  
-Dec 1, 2009
+Mar 6, 2010
